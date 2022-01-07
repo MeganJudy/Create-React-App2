@@ -83,12 +83,7 @@ class Contact extends Component {
                                     <Control.text model=".firstName" id="firstName" name="firstName"
                                         placeholder="First Name"
                                         className="form-control"
-                                        validators={{
-                                            required,
-                                            minLength: minLength(2),
-                                            maxLength: maxLength(15)
-                                        }}
-                                    />
+                                   />
                                     <Errors
                                         className="text-danger"
                                         model=".firstName"
