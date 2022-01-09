@@ -4,7 +4,7 @@ import {
     Button, Label, Col, Row
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { Control, Form, Errors, actions } from 'react-redux-form';
+import { Control, Form, Errors } from 'react-redux-form';
 
 const required = val => val && val.length;
 const maxLength = len => val => !val || (val.length <= len);
@@ -16,29 +16,11 @@ class Contact extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            firstName: '',
-            lastName: '',
-            phoneNum: '',
-            email: '',
-            agree: false,
-            contactType: 'By Phone',
-            feedback: '',
-            touched: {
-                firstName: false,
-                lastName: false,
-                phoneNum: false,
-                email: false
-            }
-        };
-
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-
     handleSubmit(values) {
-        console.log("Current state is: " + JSON.stringify(values));
-        alert("Current state is: " + JSON.stringify(values));
+        this.props.postFeedback(values);
         this.props.resetFeedbackForm();
     }
 
@@ -67,8 +49,11 @@ class Contact extends Component {
                         </address>
                     </div>
                     <div className="col">
-                        <a role="button" className="btn btn-link" href="tel:+12065551234"><i className="fa fa-phone" /> 1-206-555-1234</a><br />
-                        <a role="button" className="btn btn-link" href="mailto:fakeemail@fakeemail.co"><i className="fa fa-envelope-o" /> campsites@nucamp.co</a>
+                        <a role="button" className="btn btn-link" href="tel:+12065551234">
+                            <i className="fa fa-phone" /> 1-206-555-1234</a>
+                        <br />
+                        <a role="button" className="btn btn-link" href="mailto:fakeemail@fakeemail.co">
+                            <i className="fa fa-envelope-o" /> campsites@nucamp.co</a>
                     </div>
                 </div>
                 <div className="row row-content">
@@ -77,13 +62,22 @@ class Contact extends Component {
                         <hr />
                     </div>
                     <div className="col-md-10">
-                        <Form model="feedbackForm" onSubmit={values => this.handleSubmit(values)}>
+                        <Form model="feedbackForm"
+                            onSubmit={values => this.handleSubmit(values)}>
                             <Row className="form-group">
                                 <Label htmlFor="firstName" md={2}>First Name</Label>
                                 <Col md={10}>
-                                    <Control.text model=".firstName" id="firstName" name="firstName"
+                                    <Control.text
+                                        model=".firstName"
+                                        id="firstName"
+                                        name="firstName"
                                         placeholder="First Name"
                                         className="form-control"
+                                        validators={{
+                                            required,
+                                            minLength: minLength(2),
+                                            maxLength: maxLength(15),
+                                        }}
                                     />
                                     <Errors
                                         className="text-danger"
@@ -99,9 +93,14 @@ class Contact extends Component {
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="lastName" md={2}>Last Name</Label>
+                                <Label
+                                    htmlFor="lastName" md={2}>Last Name
+                                </Label>
                                 <Col md={10}>
-                                    <Control.text model=".lastName" id="lastName" name="lastName"
+                                    <Control.text
+                                        model=".lastName"
+                                        id="lastName"
+                                        name="lastName"
                                         placeholder="Last Name"
                                         className="form-control"
                                         validators={{
@@ -153,7 +152,10 @@ class Contact extends Component {
                             <Row className="form-group">
                                 <Label htmlFor="email" md={2}>Email</Label>
                                 <Col md={10}>
-                                    <Control.text model=".email" id="email" name="email"
+                                    <Control.text
+                                        model=".email"
+                                        id="email"
+                                        name="email"
                                         placeholder="Email"
                                         className="form-control"
                                         validators={{
@@ -197,7 +199,10 @@ class Contact extends Component {
                             <Row className="form-group">
                                 <Label htmlFor="feedback" md={2}>Your Feedback</Label>
                                 <Col md={10}>
-                                    <Control.textarea model=".feedback" id="feedback" name="feedback"
+                                    <Control.textarea
+                                        model=".feedback"
+                                        id="feedback"
+                                        name="feedback"
                                         rows="12"
                                         className="form-control"
                                     />
